@@ -21,7 +21,7 @@ namespace AdminPanelService.Models
 
         public string Password { get; set; }
 
-        [Column("ID_IMAGE_FOREIGEN")]
-        public long? IdImage { get; set; }
+        [Column("ID_IMAGE_FOREIGN")]
+        public int? IdImage { get; set; }
     }
 }

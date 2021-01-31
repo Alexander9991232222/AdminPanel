@@ -9,59 +9,102 @@ using System.Net;
 
 namespace AdminPanelService.Services
 {
-    public class UserService : BaseService<UserModel>
+    public class UserService : BaseService<User>
     {
-        public UserService(AppDbContext context) : base(context)
+        public UserService(Repasitory<User> repasitory) : base(repasitory)
         {
 
         }
 
-        public override async Task<IResult> Delete(long id)
+        public override async Task<IResult> Delete(int id)
         {
-            var findUser = _context.User.ToList()
-                                    .FirstOrDefault(x => x.Id == id);
-
-            if(findUser == null)
+            try
             {
-                return ErrorResult(
-                    HttpStatusCode.NotFound,
-                    EMessages.NotFoundElement,
+                await _repository.Remove(id);
+                await _repository.SaveChangeAsync();
+
+                return OkResult(
+                    code: HttpStatusCode.OK,
+                    message: EMessages.ElementsIsFound,
                     _nameObject);
             }
-
-            _context.User.Remove(findUser);
-            await SaveChange();
-
-            return OkResult(
-                HttpStatusCode.OK,
-                EMessages.ElementsIsFound,
-                _nameObject);
-        }
-
-        public override  async Task<IResult> GetById(long id)
-        {
-            if (findUser == null)
+            catch
             {
                 return ErrorResult(
-                    HttpStatusCode.NotFound,
-                    EMessages.NotFoundElement,
-                    _nameObject);
+                                   code: HttpStatusCode.NotFound,
+                                   message: EMessages.NotFoundElement,
+                                   nameObject: _nameObject);
+            }       
+        }
+
+        public override  async Task<IResult> GetById(int id)
+        {
+            try
+            {
+                var element = await _repository.GetByIdAsync(id);
+
+                return OkResult(
+                    code: HttpStatusCode.OK,
+                    message: EMessages.ElementsIsFound,
+                    nameObject: _nameObject,
+                    data: element);
+            }
+            catch
+            {
+                return ErrorResult(
+                                   code: HttpStatusCode.NotFound,
+                                   message: EMessages.NotFoundElement,
+                                   nameObject: _nameObject);
             }
         }
 
         public override async Task<IResult> GetList()
         {
-            
+            return OkResult(
+                code: HttpStatusCode.OK,
+                message: EMessages.ElementsIsFound,
+                nameObject: _nameObject,
+                data: await _repository.GetListAsync());
         }
 
-        public override async Task<IResult> Set(UserModel obj)
+        public override async Task<IResult> Set(User obj)
         {
-            
+            try
+            {
+                await _repository.AddAsync(obj);
+                await _repository.SaveChangeAsync();
+                return OkResult(
+                          code: HttpStatusCode.OK,
+                          message: EMessages.ElementIsAddSuccess,
+                          nameObject: _nameObject);
+            }
+            catch 
+            {
+                return ErrorResult(
+                        code: HttpStatusCode.InternalServerError,
+                        message: EMessages.ElementIsNotAdd,
+                        nameObject: _nameObject);
+            }
         }
 
-        public override async Task<IResult> Update(long id, UserModel obj)
+        public override async Task<IResult> Update(int id, User obj)
         {
-            
+            try
+            {
+                _repository.Update(id, obj);
+                await _repository.SaveChangeAsync();
+                return OkResult(
+                          code: HttpStatusCode.OK,
+                          message: EMessages.ElementIsUpdate,
+                          nameObject: _nameObject);
+            }
+            catch
+            {
+                return ErrorResult(
+                        code: HttpStatusCode.InternalServerError,
+                        message: EMessages.ElementIsNotUpdate,
+                        nameObject: _nameObject);
+            }
         }
     }
 }

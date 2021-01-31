@@ -11,16 +11,12 @@ namespace AdminPanelService.Services
     {
         abstract Task<IResult> GetList();
 
-        abstract Task<IResult> GetById(long id);
+        abstract Task<IResult> GetById(int id);
 
         abstract Task<IResult> Set(T obj);
 
-        abstract Task<IResult> Update(long id, T obj);
+        abstract Task<IResult> Update(int id, T obj);
 
-        abstract Task<IResult> Delete(long id);
-
-        void SaveChange();
-
-        T FindById(long id);
+        abstract Task<IResult> Delete(int id);
     }
 }

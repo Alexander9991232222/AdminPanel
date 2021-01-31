@@ -1,4 +1,5 @@
 using AdminPanelService.Data;
+using AdminPanelService.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -27,6 +28,11 @@ namespace AdminPanelService
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //Custom services
+            services.AddRepasitoryService();
+            services.AddUserService();
+            //Custom services end
+
             services.AddControllers();
             services.AddCors(options =>
             {
@@ -41,7 +47,9 @@ namespace AdminPanelService
 
             services.AddDbContext<AppDbContext>(opt =>
             {
-                opt.UseSqlServer(Configuration.GetConnectionString("AdminPanelDB"));
+                
+                opt.UseSqlServer(Configuration.GetConnectionString("AdminPanelDB"),
+                    providerOptions => providerOptions.EnableRetryOnFailure());
             });
         }
 

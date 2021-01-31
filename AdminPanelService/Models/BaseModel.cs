@@ -8,6 +8,6 @@ namespace AdminPanelService.Models
 {
     public abstract class BaseModel : IBaseModel
     {
-        public long? Id { get; set; }
+        public int? Id { get; set; }
     }
 }

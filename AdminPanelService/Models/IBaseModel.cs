@@ -8,6 +8,6 @@ namespace AdminPanelService.Models
 {
     public interface IBaseModel
     {
-        public long? Id { get; set; }
+        public int? Id { get; set; }
     }
 }

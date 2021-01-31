@@ -13,7 +13,7 @@ namespace AdminPanelService.Controllers
     public class LoginController : Controller
     {
         [HttpPost]
-        public async Task<IActionResult> Login([FromBody] UserModel user)
+        public async Task<IActionResult> Login([FromBody] User user)
         {
             if (!ModelState.IsValid)
             {
@@ -25,7 +25,7 @@ namespace AdminPanelService.Controllers
         [HttpGet]
         public async Task<IActionResult> GetTest()
         {
-            return Ok(new UserModel { Id = 1, Email = "my@gmail.com", Password = "123" });
+            return Ok(new User { Id = 1, Email = "my@gmail.com", Password = "123" });
         }
     }
 }

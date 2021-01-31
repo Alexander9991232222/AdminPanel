@@ -10,7 +10,7 @@ namespace AdminPanelService.Models
     public class ImageAvatar : BaseModel
     {
         [Column("ID_USER_FOREIGN")]
-        public long? IdUser { get; set; }
+        public int? IdUser { get; set; }
 
         [Column("NAME_IMAGE")]
         public string NameImage { get; set; }
