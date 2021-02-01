@@ -18,5 +18,7 @@ namespace AdminPanelService.Services
         abstract Task<IResult> Update(int id, T obj);
 
         abstract Task<IResult> Delete(int id);
+
+        abstract Task<IResult> Path(int id, T obj);
     }
 }

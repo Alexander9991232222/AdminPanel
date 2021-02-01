@@ -6,82 +6,73 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Net;
+using AutoMapper;
+using AdminPanelService.Models.DTOModels.User;
 
 namespace AdminPanelService.Services
 {
     public class UserService : BaseService<User>
     {
-        public UserService(Repasitory<User> repasitory) : base(repasitory)
+        public UserService(Repasitory<User> repasitory, IMapper mapper) : base(repasitory, mapper)
         {
 
         }
 
         public override async Task<IResult> Delete(int id)
         {
-            try
-            {
-                await _repository.Remove(id);
-                await _repository.SaveChangeAsync();
+            var findElement = await _repository.GetByIdAsync(id);
 
-                return OkResult(
-                    code: HttpStatusCode.OK,
-                    message: EMessages.ElementsIsFound,
-                    _nameObject);
-            }
-            catch
+            if (findElement is null)
             {
-                return ErrorResult(
-                                   code: HttpStatusCode.NotFound,
+                return ErrorResult(code: HttpStatusCode.NotFound,
                                    message: EMessages.NotFoundElement,
                                    nameObject: _nameObject);
-            }       
+            }
+
+            _repository.Remove(findElement);
+            await _repository.SaveChangeAsync();
+
+            return OkResult(message: EMessages.ElementsIsFound,
+                _nameObject);
         }
 
         public override  async Task<IResult> GetById(int id)
         {
-            try
-            {
-                var element = await _repository.GetByIdAsync(id);
+             var findElement = await _repository.GetByIdAsync(id);
 
-                return OkResult(
-                    code: HttpStatusCode.OK,
-                    message: EMessages.ElementsIsFound,
-                    nameObject: _nameObject,
-                    data: element);
-            }
-            catch
+            if(findElement is null)
             {
-                return ErrorResult(
-                                   code: HttpStatusCode.NotFound,
-                                   message: EMessages.NotFoundElement,
-                                   nameObject: _nameObject);
+                return ErrorResult(code: HttpStatusCode.NotFound,
+                                message: EMessages.NotFoundElement,
+                                nameObject: _nameObject);
             }
+
+            return OkResult(message: EMessages.ElementsIsFound,
+                nameObject: _nameObject,
+                data: _mapper.Map<UserRead>(findElement));
         }
 
         public override async Task<IResult> GetList()
         {
-            return OkResult(
-                code: HttpStatusCode.OK,
-                message: EMessages.ElementsIsFound,
+            return OkResult(message: EMessages.ElementsIsFound,
                 nameObject: _nameObject,
-                data: await _repository.GetListAsync());
+                data: _mapper.Map<IEnumerable<UserRead>>(await _repository.GetListAsync()));
         }
 
         public override async Task<IResult> Set(User obj)
         {
             try
             {
+                
+
                 await _repository.AddAsync(obj);
                 await _repository.SaveChangeAsync();
-                return OkResult(
-                          code: HttpStatusCode.OK,
-                          message: EMessages.ElementIsAddSuccess,
+                return OkResult(message: EMessages.ElementIsAddSuccess,
                           nameObject: _nameObject);
             }
             catch 
             {
-                return ErrorResult(
-                        code: HttpStatusCode.InternalServerError,
+                return ErrorResult(code: HttpStatusCode.InternalServerError,
                         message: EMessages.ElementIsNotAdd,
                         nameObject: _nameObject);
             }
@@ -93,18 +84,33 @@ namespace AdminPanelService.Services
             {
                 _repository.Update(id, obj);
                 await _repository.SaveChangeAsync();
-                return OkResult(
-                          code: HttpStatusCode.OK,
-                          message: EMessages.ElementIsUpdate,
+                return OkResult(message: EMessages.ElementIsUpdate,
                           nameObject: _nameObject);
             }
             catch
             {
-                return ErrorResult(
-                        code: HttpStatusCode.InternalServerError,
+                return ErrorResult(code: HttpStatusCode.InternalServerError,
                         message: EMessages.ElementIsNotUpdate,
                         nameObject: _nameObject);
             }
+        }
+
+        public override async Task<IResult> Path(int id, User obj)
+        {
+
+            var findElement = await _repository.GetByIdAsync(id);
+
+            if(findElement is null)
+            {
+                return ErrorResult(code: HttpStatusCode.InternalServerError,
+                       message: EMessages.ElementIsNotUpdate,
+                       nameObject: _nameObject);
+            }
+
+            _repository.Update(id, obj);
+            await _repository.SaveChangeAsync();
+            return OkResult(message: EMessages.ElementIsUpdate,
+                        nameObject: _nameObject);
         }
     }
 }

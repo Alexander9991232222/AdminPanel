@@ -35,33 +35,19 @@ namespace AdminPanelService.Data
                             .FirstOrDefault(x => x.Id == id);
         }
 
-        public async void Update(int id, T obj)
+        public void Update(int id, T obj)
         {
-            var findElement = await GetByIdAsync(id);
-            
-            if(findElement is null)
-            {
-                throw new NullReferenceException();
-            }
-
             _db.Update(obj);   
         }
 
-        public async Task Remove(int id)
+        public void Remove(T obj)
         {
-            var findElement = await GetByIdAsync(id);
-
-            if (findElement is null)
-            {  
-                throw new NullReferenceException();
-            }
-
-            _db.Remove(findElement);
+            _db.Remove(obj);
         }
 
-        public async Task SaveChangeAsync()
+        public async Task<bool> SaveChangeAsync()
         {
-           await _dbContext.SaveChangesAsync();
+          return (await _dbContext.SaveChangesAsync()) >= 0;
         }
     }
 }
