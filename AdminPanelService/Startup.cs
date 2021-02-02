@@ -9,6 +9,9 @@ using Microsoft.Extensions.Hosting;
 using System;
 using AutoMapper;
 using Microsoft.AspNetCore.Http.Features;
+using Microsoft.Extensions.FileProviders;
+using System.IO;
+using Microsoft.AspNetCore.Http;
 
 namespace AdminPanelService
 {
@@ -27,6 +30,8 @@ namespace AdminPanelService
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             //Custom services
+            services.AddImageService();
+            services.AddresultBuilderService();
             services.AddRepasitoryService();
             services.AddUserService();
             //Custom services end
@@ -69,6 +74,13 @@ namespace AdminPanelService
             }
 
             app.UseHttpsRedirection();
+
+            app.UseStaticFiles();
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"Resources")),
+                RequestPath = new PathString("/Resources")
+            });
 
             app.UseRouting();
 

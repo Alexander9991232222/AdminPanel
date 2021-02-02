@@ -17,5 +17,11 @@ namespace AdminPanelService.Extensions
 
         public static IServiceCollection AddRepasitoryService(this IServiceCollection services)
             => services.AddScoped<Repasitory<User>>();
+
+        public static IServiceCollection AddresultBuilderService(this IServiceCollection services)
+            => services.AddSingleton<IResultBuilder, ResultBuilderService>();
+
+        public static IServiceCollection AddImageService(this IServiceCollection services)
+            => services.AddTransient<ImageService>();
     }
 }

@@ -1,17 +1,12 @@
 ﻿using AdminPanelService.Attributes;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AdminPanelService.Data
 {
     public enum EMessages
     {
         [StringValue("Element [{0}] was not found in DB")]
-        NotFoundElement, 
-        
+        NotFoundElement,
+
         [StringValue("Element [{0}] was add success in DB")]
         ElementIsAddSuccess,
 
@@ -31,6 +26,18 @@ namespace AdminPanelService.Data
         ElementIsNotUpdate,
 
         [StringValue("Elements [{0}] was found in DB")]
-        ElementsIsFound
+        ElementsIsFound,
+
+        [StringValue("File: [{0}] is create")]
+        FileCreated,
+
+        [StringValue("File: [{0}] is not create")]
+        FileIsNotCreated,
+
+        [StringValue("File: [{0}] is not Found")]
+        FileIsNotFound,
+
+        [StringValue("File: [{0}] is update")]
+        FileIsUpdate
     }
 }

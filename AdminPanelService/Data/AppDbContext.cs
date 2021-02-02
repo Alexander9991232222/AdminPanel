@@ -11,7 +11,6 @@ namespace AdminPanelService.Data
     public class AppDbContext : DbContext
     {
         public DbSet<User> Users { get; set; }
-        public DbSet<ImageAvatar> Avatars { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> db) : base(db)
         {
