@@ -1,7 +1,6 @@
 ﻿using AdminPanelService.Data;
 using AdminPanelService.Models;
 using Microsoft.AspNetCore.Http;
-using System;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -29,9 +28,8 @@ namespace AdminPanelService.Services
 
                 using(var stream = new FileStream(fullPath, FileMode.Create))
                 await file.CopyToAsync(stream);
-            
 
-                return _resultBuilder.OkResult(EMessages.FileCreated, file.FileName);
+                return _resultBuilder.OkResult(EMessages.FileCreated, file.FileName, dbPath);
             }
             catch
             {

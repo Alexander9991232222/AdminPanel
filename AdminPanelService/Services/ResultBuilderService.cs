@@ -1,11 +1,6 @@
 ﻿using AdminPanelService.Data;
 using AdminPanelService.Helpers;
 using AdminPanelService.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AdminPanelService.Services
 {

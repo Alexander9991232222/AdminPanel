@@ -1,10 +1,13 @@
-﻿using AdminPanelService.Models;
+﻿using AdminPanelService.Helpers;
+using AdminPanelService.Models;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+using AdminPanelService.Extensions;
 
 namespace AdminPanelService.Data
 {
@@ -48,6 +51,34 @@ namespace AdminPanelService.Data
         public async Task<bool> SaveChangeAsync()
         {
           return (await _dbContext.SaveChangesAsync()) >= 0;
+        }
+
+        public async Task<T> QueryToProcedureAsync(
+            string procedureName,
+            IDictionary<string, object> inParams,
+            IDictionary<string, string> outParams = null)
+        {
+            try
+            {
+                using (DbCommand command = _dbContext.Database.GetDbConnection().CreateCommand())
+                {
+                    command.CommandText = procedureName;
+                    command.CommandType = System.Data.CommandType.StoredProcedure;
+                    SqlParameter[] parameters = SqlDataHelper.GetSQLParamsArray(inParams, outParams);
+                    command.Parameters.AddRange(parameters);
+
+                    bool wasOpen = command.Connection.State == System.Data.ConnectionState.Open;
+                    if (!wasOpen) command.Connection.Open();
+
+                    return await command.GetResultExecuteScalarAsync<T>();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+      
+
         }
     }
 }
