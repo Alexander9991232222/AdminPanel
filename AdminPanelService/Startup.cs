@@ -34,6 +34,7 @@ namespace AdminPanelService
             services.AddresultBuilderService();
             services.AddRepasitoryService();
             services.AddUserService();
+            services.AddProductService();
             //Custom services end
 
             //Work width file config

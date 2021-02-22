@@ -8,6 +8,10 @@ namespace AdminPanelService.Models.DTOModels.Product
 {
     public class ProductRead
     {
-        
+        public string ProductName { get; set; }
+
+        public string ProductType { get; set; }
+
+        public object ProductPropertys { get; set; }
     }
 }

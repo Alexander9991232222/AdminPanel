@@ -14,7 +14,7 @@ namespace AdminPanelService.Controllers
         [HttpGet]
         public async Task<IActionResult> GetProducts()
         {
-
+            return Ok(await _data.GetList());
         }
     }
 }

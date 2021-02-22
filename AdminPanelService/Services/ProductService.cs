@@ -1,5 +1,6 @@
 ﻿using AdminPanelService.Data;
 using AdminPanelService.Models;
+using AdminPanelService.Models.DTOModels.Product;
 using AutoMapper;
 using System;
 using System.Collections.Generic;
@@ -17,32 +18,37 @@ namespace AdminPanelService.Services
 
         }
 
-        public override Task<IResult> Delete(int id)
+        public async override Task<IResult> Delete(int id)
         {
             throw new NotImplementedException();
         }
 
-        public override Task<IResult> GetById(int id)
+        public async override Task<IResult> GetById(int id)
         {
             throw new NotImplementedException();
         }
 
-        public override Task<IResult> GetList()
+        public async override Task<IResult> GetList()
+        {
+            var listResult = await _repository.QueryToProcedureAsync<List<Product>>("dbo.GET_PRODUCT_LIST");
+            var mappedList  = _mapper.Map<List<ProductRead>>(listResult);
+
+            return _resultBuilder.OkResult(
+                    EMessages.ElementsIsFound,
+                    _nameObject, mappedList);
+        }
+
+        public async override Task<IResult> Path(int id, Product obj)
         {
             throw new NotImplementedException();
         }
 
-        public override Task<IResult> Path(int id, Product obj)
+        public async override Task<IResult> Set(Product obj)
         {
             throw new NotImplementedException();
         }
 
-        public override Task<IResult> Set(Product obj)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override Task<IResult> Update(int id, Product obj)
+        public async override Task<IResult> Update(int id, Product obj)
         {
             throw new NotImplementedException();
         }

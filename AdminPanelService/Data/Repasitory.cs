@@ -53,9 +53,9 @@ namespace AdminPanelService.Data
           return (await _dbContext.SaveChangesAsync()) >= 0;
         }
 
-        public async Task<T> QueryToProcedureAsync(
+        public async Task<T> QueryToProcedureAsync <T>(
             string procedureName,
-            IDictionary<string, object> inParams,
+            IDictionary<string, object> inParams = null,
             IDictionary<string, string> outParams = null)
         {
             try
@@ -64,8 +64,12 @@ namespace AdminPanelService.Data
                 {
                     command.CommandText = procedureName;
                     command.CommandType = System.Data.CommandType.StoredProcedure;
-                    SqlParameter[] parameters = SqlDataHelper.GetSQLParamsArray(inParams, outParams);
-                    command.Parameters.AddRange(parameters);
+
+                    if(inParams != null || outParams != null)
+                    {
+                        SqlParameter[] parameters = SqlDataHelper.GetSQLParamsArray(inParams, outParams);
+                        command.Parameters.AddRange(parameters);
+                    }
 
                     bool wasOpen = command.Connection.State == System.Data.ConnectionState.Open;
                     if (!wasOpen) command.Connection.Open();

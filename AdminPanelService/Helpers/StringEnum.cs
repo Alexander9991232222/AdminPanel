@@ -17,9 +17,9 @@ namespace AdminPanelService.Helpers
 
             FieldInfo fi = type.GetField(value.ToString());
 
-            StringValue[] attrs = fi.GetCustomAttributes(
-                        typeof(StringValue), 
-                        false) as StringValue[];
+            StringValueAttribute[] attrs = fi.GetCustomAttributes(
+                        typeof(StringValueAttribute), 
+                        false) as StringValueAttribute[];
             
             if(attrs.Length > 0)
             {

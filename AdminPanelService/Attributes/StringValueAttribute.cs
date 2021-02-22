@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace AdminPanelService.Attributes
 {
-    public class StringValue : Attribute
+    sealed class StringValueAttribute : Attribute
     {
         private readonly string _value;
         public string Value { get => _value; }
 
-        public StringValue(string value)
+        public StringValueAttribute(string value)
         {
             _value = value;
         }

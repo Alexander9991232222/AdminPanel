@@ -33,6 +33,7 @@ namespace AdminPanelService.Helpers
         public static SqlParameter[] GetSQLParamsArray(IDictionary<string, object> inParams, IDictionary<string, string> outParams = null)
         {
             var listParams = new List<SqlParameter>();
+
             listParams.AddRange(_getListParams(inParams, ParameterDirection.Input));
 
             if (outParams != null)

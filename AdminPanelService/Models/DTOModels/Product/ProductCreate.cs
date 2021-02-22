@@ -9,6 +9,5 @@ namespace AdminPanelService.Models.DTOModels.Product
 {
     public class ProductCreate
     {
-        
     }
 }

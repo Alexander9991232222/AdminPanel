@@ -2,11 +2,6 @@
 using AdminPanelService.Models;
 using AdminPanelService.Services;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AdminPanelService.Extensions
 {
@@ -16,12 +11,19 @@ namespace AdminPanelService.Extensions
             => services.AddTransient<UserService>();
 
         public static IServiceCollection AddRepasitoryService(this IServiceCollection services)
-            => services.AddScoped<Repasitory<User>>();
+        {
+            services.AddScoped<Repasitory<User>>();
+            services.AddScoped<Repasitory<Product>>();
+            return services;
+        }
 
         public static IServiceCollection AddresultBuilderService(this IServiceCollection services)
             => services.AddSingleton<IResultBuilder, ResultBuilderService>();
 
         public static IServiceCollection AddImageService(this IServiceCollection services)
             => services.AddTransient<ImageService>();
+
+        public static IServiceCollection AddProductService(this IServiceCollection services)
+            => services.AddTransient<ProductService>();
     }
 }
